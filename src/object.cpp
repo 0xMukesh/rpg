@@ -1,75 +1,59 @@
 #include "object.h"
 #include <cmath>
 
-Object::Object(Vector2 position, Vector2 velocity, float radius, float mass)
-    : position(position), velocity(velocity), radius(radius), mass(mass) {}
-
-void Object::accelerate(float x, float y) {
-  velocity.x += x;
-  velocity.y += y;
-}
-
-void Object::updatePosition() {
-  position.x += velocity.x;
-  position.y += velocity.y;
-}
+Object::Object(Vector2 position, Vector2 velocity, float mass, float radius)
+    : position(position), velocity(velocity), mass(mass), radius(radius) {}
 
 void Object::drawCircle() { DrawCircle(position.x, position.y, radius, WHITE); }
 
-bool Object::resolveCollision(Object &a) {
-  float dx = position.x - a.position.x;
-  float dy = position.y - a.position.y;
+void Object::accelerate(Vector2 acc) {
+  velocity.x += acc.x;
+  velocity.y += acc.y;
+}
+
+void Object::updatePosition(float dt) {
+  position.x += velocity.x * dt;
+  position.y += velocity.y * dt;
+}
+
+void Object::handleCollision(Object &obj) {
+  float dx = obj.position.x - position.x;
+  float dy = obj.position.y - position.y;
   float dist = sqrt(dx * dx + dy * dy);
 
-  float minDist = radius + a.radius;
+  float minDist = obj.radius + radius;
 
-  if (dist < minDist && dist > 0.0f) {
-    float overlap = minDist - dist;
-
+  if (dist < minDist) {
     float nx = dx / dist;
     float ny = dy / dist;
 
-    position.x += nx * (overlap / 2);
-    position.y += ny * (overlap / 2);
-    a.position.x -= nx * (overlap / 2);
-    a.position.y -= ny * (overlap / 2);
+    float relVelX = obj.velocity.x - velocity.x;
+    float relVelY = obj.velocity.y - velocity.y;
 
-    std::swap(velocity, a.velocity);
+    float relVelDotNormal = relVelX * nx + relVelY * ny;
 
-    return true;
-  }
+    if (relVelDotNormal > 0)
+      return;
 
-  return false;
-}
+    float restitution = 0.7f;
 
-void Object::handleBoundaryCollision(float height, float width) {
-  if (position.y + radius < 0) {
-    position.y = radius;
-    velocity.y *= -0.5;
-  }
+    float impulseScalar = -(1 + restitution) * relVelDotNormal;
+    impulseScalar /= (1 / mass) + (1 / obj.mass);
 
-  if (position.y + radius > height) {
-    position.y = height - radius;
-    velocity.y *= -0.5;
-  }
+    float impulseX = impulseScalar * nx;
+    float impulseY = impulseScalar * ny;
 
-  if (position.x + radius < 0) {
-    position.x = radius;
-    velocity.x *= -0.5;
-  }
+    velocity.x -= impulseX / mass;
+    velocity.y -= impulseY / mass;
+    obj.velocity.x += impulseX / obj.mass;
+    obj.velocity.y += impulseY / obj.mass;
 
-  if (position.x + radius > width) {
-    position.x = width - radius;
-    velocity.x *= 0.5;
-  }
-}
+    float overlap = minDist - dist;
+    float correction = overlap * 0.5f;
 
-void Object::handleKeyboardInput() {
-  if (IsKeyDown(KEY_LEFT)) {
-    velocity.x -= 0.1;
-  }
-
-  if (IsKeyDown(KEY_RIGHT)) {
-    velocity.x += 0.1;
+    position.x -= nx * correction;
+    position.y -= ny * correction;
+    obj.position.x += nx * correction;
+    obj.position.y += ny * correction;
   }
 }

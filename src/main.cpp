@@ -1,41 +1,25 @@
 #include "object.h"
 #include "raylib.h"
 #include "scene.h"
-#include <cmath>
-#include <vector>
-
-struct Ball {
-  Vector2 position;
-  Vector2 velocity;
-  float radius;
-  Color color;
-};
-
-bool checkCollision(const Object &a, const Object &b) {
-  float dx = a.position.x - b.position.x;
-  float dy = a.position.y - b.position.y;
-  float dist = std::sqrt(dx * dx + dy * dy);
-  return dist < a.radius + b.radius;
-}
 
 int main() {
-  const float width = 1200;
-  const float height = 1000;
+  float width = 1200;
+  float height = 1000;
 
-  InitWindow(width, height, "gravity sim");
-  SetTargetFPS(120);
+  InitWindow(width, height, "gravity-sim");
 
-  std::vector<Object> objs = {
-      Object(Vector2{600, 500}, Vector2{0, 0}, 30, 1e10), // central mass
-      Object(Vector2{600, 300}, Vector2{4, 0}, 10, 1)     // orbiting body
-  };
+  Object ball1 = Object(Vector2{600, 700}, Vector2{0, 0}, 100, 20);
+  Object ball2 = Object(Vector2{600, 800}, Vector2{0, 0}, 100, 20);
 
-  Scene scene = Scene(height, width, objs);
+  Scene scene = Scene(width, height, {ball1, ball2});
 
   while (!WindowShouldClose()) {
-    scene.handleScene();
-    BeginDrawing();
+    float dt = GetFrameTime();
+
+    scene.update(dt);
+    scene.render();
     ClearBackground(BLACK);
+    BeginDrawing();
     EndDrawing();
   }
 

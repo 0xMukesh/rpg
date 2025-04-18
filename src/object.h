@@ -1,19 +1,20 @@
-#pragma once
-
 #include "raylib.h"
+
+#ifndef OBJECT
+#define OBJECT
 
 class Object {
 public:
   Vector2 position;
   Vector2 velocity;
-  float radius;
   float mass;
+  float radius;
 
-  Object(Vector2 position, Vector2 velocity, float radius, float mass);
-  void accelerate(float x, float y);
-  void updatePosition();
+  Object(Vector2 position, Vector2 velocity, float mass, float radius);
+  void accelerate(Vector2 acc);
+  void updatePosition(float dt);
+  void handleCollision(Object &obj);
   void drawCircle();
-  bool resolveCollision(Object &a);
-  void handleBoundaryCollision(float height, float width);
-  void handleKeyboardInput();
 };
+
+#endif

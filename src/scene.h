@@ -1,17 +1,19 @@
-#pragma once
-
 #include "object.h"
 #include <vector>
 
+#ifndef SCENE
+#define SCENE
+
 class Scene {
 public:
-  float height;
   float width;
-
-  Scene(float height, float width, std::vector<Object> objs);
-  void addObject(Object &obj);
-  void handleScene();
-
-private:
+  float height;
   std::vector<Object> objs;
+
+  Scene(float width, float height, std::vector<Object> objs);
+  void update(float dt);
+  void render();
+  void handleBoundaryCollision(Object &obj);
 };
+
+#endif
