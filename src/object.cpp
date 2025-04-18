@@ -1,8 +1,8 @@
 #include "object.h"
 #include <cmath>
 
-Object::Object(Vector2 position, Vector2 velocity, float radius)
-    : position(position), velocity(velocity), radius(radius) {}
+Object::Object(Vector2 position, Vector2 velocity, float radius, float mass)
+    : position(position), velocity(velocity), radius(radius), mass(mass) {}
 
 void Object::accelerate(float x, float y) {
   velocity.x += x;
@@ -43,9 +43,14 @@ bool Object::resolveCollision(Object &a) {
 }
 
 void Object::handleBoundaryCollision(float height, float width) {
+  if (position.y + radius < 0) {
+    position.y = radius;
+    velocity.y *= -0.5;
+  }
+
   if (position.y + radius > height) {
     position.y = height - radius;
-    velocity.y *= -0.7;
+    velocity.y *= -0.5;
   }
 
   if (position.x + radius < 0) {

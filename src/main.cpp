@@ -19,15 +19,16 @@ bool checkCollision(const Object &a, const Object &b) {
 }
 
 int main() {
-  const float width = 800;
+  const float width = 1200;
   const float height = 1000;
 
   InitWindow(width, height, "gravity sim");
   SetTargetFPS(120);
 
   std::vector<Object> objs = {
-      Object(Vector2{width / 2 + 50, height * 0.2f}, Vector2{0, 0}, 20),
-      Object(Vector2{width / 2 - 50, height * 0.2f}, Vector2{0, 0}, 20)};
+      Object(Vector2{600, 500}, Vector2{0, 0}, 30, 1e10), // central mass
+      Object(Vector2{600, 300}, Vector2{4, 0}, 10, 1)     // orbiting body
+  };
 
   Scene scene = Scene(height, width, objs);
 
