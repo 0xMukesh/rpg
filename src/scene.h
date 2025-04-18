@@ -9,6 +9,7 @@ public:
   float width;
 
   Scene(float height, float width, std::vector<Object> objs);
+  void addObject(Object &obj);
   void handleScene();
 
 private:

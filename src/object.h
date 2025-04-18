@@ -12,7 +12,7 @@ public:
   void accelerate(float x, float y);
   void updatePosition();
   void drawCircle();
-  bool doesCollide(Object &a);
+  bool resolveCollision(Object &a);
   void handleBoundaryCollision(float height, float width);
   void handleKeyboardInput();
 };

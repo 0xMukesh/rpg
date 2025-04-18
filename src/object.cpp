@@ -16,11 +16,30 @@ void Object::updatePosition() {
 
 void Object::drawCircle() { DrawCircle(position.x, position.y, radius, WHITE); }
 
-bool Object::doesCollide(Object &a) {
+bool Object::resolveCollision(Object &a) {
   float dx = position.x - a.position.x;
   float dy = position.y - a.position.y;
   float dist = sqrt(dx * dx + dy * dy);
-  return dist <= radius + a.radius;
+
+  float minDist = radius + a.radius;
+
+  if (dist < minDist && dist > 0.0f) {
+    float overlap = minDist - dist;
+
+    float nx = dx / dist;
+    float ny = dy / dist;
+
+    position.x += nx * (overlap / 2);
+    position.y += ny * (overlap / 2);
+    a.position.x -= nx * (overlap / 2);
+    a.position.y -= ny * (overlap / 2);
+
+    std::swap(velocity, a.velocity);
+
+    return true;
+  }
+
+  return false;
 }
 
 void Object::handleBoundaryCollision(float height, float width) {
