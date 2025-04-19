@@ -1,8 +1,10 @@
 #include "object.h"
 #include <cmath>
 
-Object::Object(Vector2 position, Vector2 velocity, float mass, float radius)
-    : position(position), velocity(velocity), mass(mass), radius(radius) {}
+Object::Object(Vector2 position, Vector2 velocity, float mass, float radius,
+               bool isAtRest)
+    : position(position), velocity(velocity), mass(mass), radius(radius),
+      isAtRest(isAtRest) {}
 
 void Object::drawCircle() { DrawCircle(position.x, position.y, radius, WHITE); }
 

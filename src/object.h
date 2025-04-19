@@ -9,8 +9,10 @@ public:
   Vector2 velocity;
   float mass;
   float radius;
+  bool isAtRest;
 
-  Object(Vector2 position, Vector2 velocity, float mass, float radius);
+  Object(Vector2 position, Vector2 velocity, float mass, float radius,
+         bool isAtRest);
   void accelerate(Vector2 acc);
   void updatePosition(float dt);
   void handleCollision(Object &obj);
