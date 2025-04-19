@@ -9,18 +9,19 @@ int main() {
   InitWindow(width, height, "gravity-sim");
   SetTargetFPS(120);
 
-  Object ball1 = Object(Vector2{600, 700}, Vector2{2000, 0}, 100, 20, false);
-  // Object ball2 = Object(Vector2{600, 800}, Vector2{0, 0}, 100, 20);
+  Object ball1 = Object(Vector2{600, 600}, Vector2{0, 0}, 100, 20, WHITE);
+  Object ball2 = Object(Vector2{600, 500}, Vector2{0, 0}, 100, 100, WHITE);
 
-  Scene scene = Scene(width, height, {ball1});
+  Scene scene = Scene(width, height, {ball1, ball2});
 
   while (!WindowShouldClose()) {
     float dt = GetFrameTime();
 
     scene.update(dt);
-    scene.render();
-    ClearBackground(BLACK);
+
     BeginDrawing();
+    ClearBackground(BLACK);
+    scene.render();
     EndDrawing();
   }
 

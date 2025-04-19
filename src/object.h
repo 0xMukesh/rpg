@@ -9,13 +9,14 @@ public:
   Vector2 velocity;
   float mass;
   float radius;
-  bool isAtRest;
+  Color color;
+  bool isGrounded = false;
 
   Object(Vector2 position, Vector2 velocity, float mass, float radius,
-         bool isAtRest);
+         Color color);
   void accelerate(Vector2 acc);
   void updatePosition(float dt);
-  void handleCollision(Object &obj);
+  void handleCollision(Object &obj, float width, float height);
   void drawCircle();
 };
 
