@@ -2,6 +2,8 @@
 #include "../common.h"
 
 void GameRender(GameContext &ctx) {
+  BeginMode2D(ctx.camera);
+
   Tile tile;
 
   for (int i = 0; i < WORLD_WIDTH; i++) {
@@ -41,8 +43,18 @@ void GameRender(GameContext &ctx) {
           Rectangle{(float)(TILE_WIDTH * tile.x), (float)(TILE_HEIGHT * tile.y),
                     TILE_WIDTH, TILE_HEIGHT};
 
-      DrawTexturePro(ctx.textures[TEXTURE_TILEMAP], src, dest, Vector2{0, 0}, 0,
-                     WHITE);
+      DrawTexturePro(ctx.textures[TEXTURE_TILEMAP], src, dest,
+                     Vector2{0.0f, 0.0f}, 0.0f, WHITE);
     }
   }
+
+  Rectangle src =
+      Rectangle{TILE_WIDTH * 4, TILE_HEIGHT * 0, TILE_WIDTH, TILE_HEIGHT};
+  Rectangle dest = Rectangle{ctx.camera.target.x, ctx.camera.target.y,
+                             TILE_WIDTH, TILE_HEIGHT};
+
+  DrawTexturePro(ctx.textures[TEXTURE_TILEMAP], src, dest, Vector2{0.0f, 0.0f},
+                 0.0f, WHITE);
+
+  EndMode2D();
 }

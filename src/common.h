@@ -23,3 +23,7 @@ struct Tile {
   int y;
   int type;
 };
+
+struct Player {
+  Vector2 position;
+};

@@ -3,6 +3,7 @@
 #include "core/render.h"
 #include "core/shutdown.h"
 #include "core/startup.h"
+#include "core/update.h"
 #include "raylib.h"
 
 int main() {
@@ -13,6 +14,8 @@ int main() {
   GameStartup(ctx);
 
   while (!WindowShouldClose()) {
+    GameUpdate(ctx);
+
     BeginDrawing();
     ClearBackground(BLACK);
     GameRender(ctx);
