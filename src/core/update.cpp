@@ -17,13 +17,13 @@ void GameUpdate(GameContext &ctx) {
   float pos_x_inc = 0.0f;
   float pos_y_inc = 0.0f;
 
-  if (IsKeyPressed(KEY_LEFT))
+  if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
     pos_x_inc -= TILE_WIDTH;
-  if (IsKeyPressed(KEY_RIGHT))
+  if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
     pos_x_inc += TILE_WIDTH;
-  if (IsKeyPressed(KEY_UP))
+  if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
     pos_y_inc -= TILE_HEIGHT;
-  if (IsKeyPressed(KEY_DOWN))
+  if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
     pos_y_inc += TILE_HEIGHT;
 
   int next_block_x = (int)(ctx.player.position.x + pos_x_inc) / TILE_WIDTH;
