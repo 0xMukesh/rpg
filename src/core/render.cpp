@@ -2,15 +2,45 @@
 #include "../common.h"
 
 void GameRender(GameContext &ctx) {
-  for (int i = 0; i < SCREEN_WIDTH / TILE_WIDTH; i++) {
-    for (int j = 0; j < SCREEN_HEIGHT / TILE_HEIGHT; j++) {
-      Tile tile = {i, j};
+  Tile tile;
+
+  for (int i = 0; i < WORLD_WIDTH; i++) {
+    for (int j = 0; j < WORLD_HEIGHT; j++) {
+      tile = ctx.world[i][j];
+
+      float texture_idx_x;
+      float texture_idx_y;
+
+      switch (tile.type) {
+      case TILE_TYPE_DIRT:
+        texture_idx_x = 4;
+        texture_idx_y = 4;
+        break;
+      case TILE_TYPE_GRASS:
+        texture_idx_x = 5;
+        texture_idx_y = 4;
+        break;
+      case TILE_TYPE_DEFAULT_TREE:
+        texture_idx_x = 5;
+        texture_idx_y = 5;
+        break;
+      case TILE_TYPE_PINE_TREE:
+        texture_idx_x = 4;
+        texture_idx_y = 5;
+        break;
+      case TILE_TYPE_BEACH_TREE:
+        texture_idx_x = 7;
+        texture_idx_y = 5;
+        break;
+      }
 
       Rectangle src =
-          Rectangle{TILE_WIDTH * 5, TILE_HEIGHT * 4, TILE_WIDTH, TILE_HEIGHT};
-      Rectangle dest =
-          Rectangle{(float)(tile.x * TILE_WIDTH), (float)(tile.y * TILE_HEIGHT),
+          Rectangle{TILE_WIDTH * texture_idx_x, TILE_HEIGHT * texture_idx_y,
                     TILE_WIDTH, TILE_HEIGHT};
+      Rectangle dest =
+          Rectangle{(float)(TILE_WIDTH * tile.x), (float)(TILE_HEIGHT * tile.y),
+                    TILE_WIDTH, TILE_HEIGHT};
+
       DrawTexturePro(ctx.textures[TEXTURE_TILEMAP], src, dest, Vector2{0, 0}, 0,
                      WHITE);
     }

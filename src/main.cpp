@@ -1,4 +1,5 @@
 #include "common.h"
+#include "context.h"
 #include "core/render.h"
 #include "core/shutdown.h"
 #include "core/startup.h"
@@ -9,10 +10,9 @@ int main() {
   SetTargetFPS(60);
 
   GameContext ctx;
+  GameStartup(ctx);
 
   while (!WindowShouldClose()) {
-    GameStartup(ctx);
-
     BeginDrawing();
     ClearBackground(BLACK);
     GameRender(ctx);
