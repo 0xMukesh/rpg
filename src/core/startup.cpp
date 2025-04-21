@@ -1,5 +1,6 @@
 #include "startup.h"
 #include "../common.h"
+#include "../utils.h"
 #include "raylib.h"
 
 Texture2D textures[MAX_TEXTURES];
@@ -30,6 +31,11 @@ void GameStartup(GameContext &ctx) {
     }
   }
 
+  // start from welcome page
+  ctx.page = GAME_PAGE_WELCOME;
+  utils::game_pages::InitializeWelcomePage(ctx);
+
+  // set player in the centre of the screen initially
   ctx.player.position = Vector2{SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f};
 
   ctx.camera.target = ctx.player.position;

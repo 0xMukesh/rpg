@@ -1,7 +1,19 @@
 #include "render.h"
 #include "../common.h"
+#include "../utils.h"
+#include "raylib.h"
 
-void GameRender(GameContext &ctx) {
+void RenderWelcomePage(GameContext &ctx) {
+  DrawText(ctx.pageState.welcome.title, ctx.pageState.welcome.titleBounds.x,
+           ctx.pageState.welcome.titleBounds.y,
+           ctx.pageState.welcome.titleBounds.height, WHITE);
+  utils::DrawHoverableText(
+      ctx.pageState.welcome.subtitle, ctx.pageState.welcome.subtitleBounds.x,
+      ctx.pageState.welcome.subtitleBounds.y,
+      ctx.pageState.welcome.subtitleBounds.height, WHITE, YELLOW);
+}
+
+void RenderMainGame(GameContext &ctx) {
   BeginMode2D(ctx.camera);
 
   Tile tile;
@@ -57,4 +69,15 @@ void GameRender(GameContext &ctx) {
                  0.0f, WHITE);
 
   EndMode2D();
+}
+
+void GameRender(GameContext &ctx) {
+  switch (ctx.page) {
+  case GAME_PAGE_WELCOME:
+    RenderWelcomePage(ctx);
+    break;
+  case GAME_PAGE_IN_GAME:
+    RenderMainGame(ctx);
+    break;
+  }
 }

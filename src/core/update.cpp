@@ -1,8 +1,23 @@
 #include "update.h"
-#include <iostream>
+#include "../utils.h"
 #include <raylib.h>
 
-void GameUpdate(GameContext &ctx) {
+void HandleWelcomePage(GameContext &ctx) {
+  if (ctx.page != GAME_PAGE_WELCOME)
+    return;
+
+  Rectangle subtitleBounds =
+      utils::text_bounds::GetWelcomePageSubtitleRectBounds(
+          ctx.pageState.welcome.subtitle);
+
+  if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+    Vector2 mousePos = GetMousePosition();
+    bool clickedSubtitle = CheckCollisionPointRec(mousePos, subtitleBounds);
+    utils::game_pages::ChangeGamePage(ctx, GAME_PAGE_IN_GAME);
+  }
+}
+
+void HandleMainGamePage(GameContext &ctx) {
   float wheel = GetMouseWheelMove();
 
   if (wheel != 0) {
@@ -39,4 +54,15 @@ void GameUpdate(GameContext &ctx) {
   }
 
   ctx.camera.target = ctx.player.position;
+}
+
+void GameUpdate(GameContext &ctx) {
+  switch (ctx.page) {
+  case GAME_PAGE_WELCOME:
+    HandleWelcomePage(ctx);
+    break;
+  case GAME_PAGE_IN_GAME:
+    HandleMainGamePage(ctx);
+    break;
+  }
 }

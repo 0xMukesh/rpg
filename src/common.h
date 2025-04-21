@@ -17,13 +17,15 @@ enum TileType {
   TILE_TYPE_PINE_TREE,
   TILE_TYPE_BEACH_TREE
 };
+enum GamePage { GAME_PAGE_WELCOME = 0, GAME_PAGE_IN_GAME };
+enum PlayerType { PLAYER_TYPE_MALE = 0, PLAYER_TYPE_FEMALE };
 
 struct Tile {
   int x;
   int y;
   int type;
 };
-
 struct Player {
   Vector2 position;
+  PlayerType type;
 };
