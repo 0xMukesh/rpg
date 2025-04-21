@@ -1,19 +1,51 @@
 #include "update.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 #include <raylib.h>
 
 void HandleWelcomePage(GameContext &ctx) {
   if (ctx.page != GAME_PAGE_WELCOME)
     return;
 
-  Rectangle subtitleBounds =
-      utils::text_bounds::GetWelcomePageSubtitleRectBounds(
-          ctx.pageState.welcome.subtitle);
+  Rectangle subtitleBounds = utils::text_bounds::GetWelcomePageSubtitleBounds(
+      ctx.pageState.welcome.subtitle);
 
   if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
     Vector2 mousePos = GetMousePosition();
     bool clickedSubtitle = CheckCollisionPointRec(mousePos, subtitleBounds);
-    utils::game_pages::ChangeGamePage(ctx, GAME_PAGE_IN_GAME);
+
+    if (clickedSubtitle) {
+      utils::game_pages::ChangeGamePage(ctx, GAME_PAGE_CHARACTER_SELECTION);
+    }
+  }
+}
+
+void HandleCharacterSelectionPage(GameContext &ctx) {
+  if (ctx.page != GAME_PAGE_CHARACTER_SELECTION)
+    return;
+
+  Rectangle maleTextBounds =
+      utils::text_bounds::GetCharacterSelectionMaleTextBounds(
+          ctx.pageState.characterSelection.maleText);
+  Rectangle femaleTextBounds =
+      utils::text_bounds::GetCharacterSelectionFemaleTextBounds(
+          ctx.pageState.characterSelection.femaleText);
+
+  if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+    Vector2 mousePos = GetMousePosition();
+    bool selectedMaleCharacter =
+        CheckCollisionPointRec(mousePos, maleTextBounds);
+    bool selectedFemaleCharacter =
+        CheckCollisionPointRec(mousePos, femaleTextBounds);
+
+    if (selectedMaleCharacter) {
+      ctx.player.type = PLAYER_TYPE_MALE;
+      utils::game_pages::ChangeGamePage(ctx, GAME_PAGE_IN_GAME);
+    }
+
+    if (selectedFemaleCharacter) {
+      ctx.player.type = PLAYER_TYPE_FEMALE;
+      utils::game_pages::ChangeGamePage(ctx, GAME_PAGE_IN_GAME);
+    }
   }
 }
 
@@ -60,6 +92,9 @@ void GameUpdate(GameContext &ctx) {
   switch (ctx.page) {
   case GAME_PAGE_WELCOME:
     HandleWelcomePage(ctx);
+    break;
+  case GAME_PAGE_CHARACTER_SELECTION:
+    HandleCharacterSelectionPage(ctx);
     break;
   case GAME_PAGE_IN_GAME:
     HandleMainGamePage(ctx);

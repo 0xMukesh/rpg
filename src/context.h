@@ -10,8 +10,17 @@ struct WelcomePageText {
   Rectangle subtitleBounds;
 };
 
+struct CharacterSelectionPageText {
+  const char *title;
+  const char *maleText;
+  const char *femaleText;
+  Rectangle maleTextBounds;
+  Rectangle femaleTextBounds;
+};
+
 union PageState {
   WelcomePageText welcome;
+  CharacterSelectionPageText characterSelection;
 
   PageState() {}
   ~PageState() {}

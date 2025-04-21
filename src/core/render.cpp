@@ -1,6 +1,6 @@
 #include "render.h"
 #include "../common.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 #include "raylib.h"
 
 void RenderWelcomePage(GameContext &ctx) {
@@ -11,6 +11,25 @@ void RenderWelcomePage(GameContext &ctx) {
       ctx.pageState.welcome.subtitle, ctx.pageState.welcome.subtitleBounds.x,
       ctx.pageState.welcome.subtitleBounds.y,
       ctx.pageState.welcome.subtitleBounds.height, WHITE, YELLOW);
+}
+
+void RenderCharacterSelectionPage(GameContext &ctx) {
+  const char *title = "Choose your character";
+  float titleFontSize = 30.0f;
+  float titleWidth = MeasureText(title, titleFontSize);
+
+  DrawText(title, SCREEN_WIDTH / 2.0f - titleWidth / 2.0f + 10, 100,
+           titleFontSize, WHITE);
+  utils::DrawHoverableText(
+      ctx.pageState.characterSelection.maleText,
+      ctx.pageState.characterSelection.maleTextBounds.x,
+      ctx.pageState.characterSelection.maleTextBounds.y,
+      ctx.pageState.characterSelection.maleTextBounds.height, WHITE, YELLOW);
+  utils::DrawHoverableText(
+      ctx.pageState.characterSelection.femaleText,
+      ctx.pageState.characterSelection.femaleTextBounds.x,
+      ctx.pageState.characterSelection.femaleTextBounds.y,
+      ctx.pageState.characterSelection.femaleTextBounds.height, WHITE, YELLOW);
 }
 
 void RenderMainGame(GameContext &ctx) {
@@ -60,8 +79,10 @@ void RenderMainGame(GameContext &ctx) {
     }
   }
 
-  Rectangle src =
-      Rectangle{TILE_WIDTH * 4, TILE_HEIGHT * 0, TILE_WIDTH, TILE_HEIGHT};
+  float player_texture_idx = ctx.player.type == PLAYER_TYPE_MALE ? 4 : 8;
+
+  Rectangle src = Rectangle{TILE_WIDTH * player_texture_idx, TILE_HEIGHT * 0,
+                            TILE_WIDTH, TILE_HEIGHT};
   Rectangle dest = Rectangle{ctx.camera.target.x, ctx.camera.target.y,
                              TILE_WIDTH, TILE_HEIGHT};
 
@@ -75,6 +96,9 @@ void GameRender(GameContext &ctx) {
   switch (ctx.page) {
   case GAME_PAGE_WELCOME:
     RenderWelcomePage(ctx);
+    break;
+  case GAME_PAGE_CHARACTER_SELECTION:
+    RenderCharacterSelectionPage(ctx);
     break;
   case GAME_PAGE_IN_GAME:
     RenderMainGame(ctx);

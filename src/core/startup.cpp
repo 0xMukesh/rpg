@@ -1,6 +1,6 @@
 #include "startup.h"
 #include "../common.h"
-#include "../utils.h"
+#include "../utils/utils.h"
 #include "raylib.h"
 
 Texture2D textures[MAX_TEXTURES];
