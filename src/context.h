@@ -14,6 +14,7 @@ struct CharacterSelectionPageText {
   const char *title;
   const char *maleText;
   const char *femaleText;
+  Rectangle titleBounds;
   Rectangle maleTextBounds;
   Rectangle femaleTextBounds;
 };

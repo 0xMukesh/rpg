@@ -2,6 +2,7 @@
 #include "../common.h"
 #include "../utils/utils.h"
 #include "raylib.h"
+#include <cmath>
 
 void RenderWelcomePage(GameContext &ctx) {
   DrawText(ctx.pageState.welcome.title, ctx.pageState.welcome.titleBounds.x,
@@ -14,12 +15,10 @@ void RenderWelcomePage(GameContext &ctx) {
 }
 
 void RenderCharacterSelectionPage(GameContext &ctx) {
-  const char *title = "Choose your character";
-  float titleFontSize = 30.0f;
-  float titleWidth = MeasureText(title, titleFontSize);
-
-  DrawText(title, SCREEN_WIDTH / 2.0f - titleWidth / 2.0f + 10, 100,
-           titleFontSize, WHITE);
+  DrawText(ctx.pageState.characterSelection.title,
+           ctx.pageState.characterSelection.titleBounds.x,
+           ctx.pageState.characterSelection.titleBounds.y,
+           ctx.pageState.characterSelection.titleBounds.height, WHITE);
   utils::DrawHoverableText(
       ctx.pageState.characterSelection.maleText,
       ctx.pageState.characterSelection.maleTextBounds.x,
