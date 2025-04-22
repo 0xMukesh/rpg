@@ -15,7 +15,8 @@ enum TileType {
   TILE_TYPE_GRASS,
   TILE_TYPE_DEFAULT_TREE,
   TILE_TYPE_PINE_TREE,
-  TILE_TYPE_BEACH_TREE
+  TILE_TYPE_BEACH_TREE,
+  TILE_TYPE_COIN,
 };
 enum GamePage {
   GAME_PAGE_WELCOME = 0,
@@ -29,7 +30,9 @@ struct Tile {
   int y;
   int type;
 };
+
 struct Player {
   Vector2 position;
   PlayerType type;
+  int coins;
 };

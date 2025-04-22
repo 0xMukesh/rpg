@@ -64,6 +64,10 @@ void RenderMainGame(GameContext &ctx) {
         texture_idx_x = 7;
         texture_idx_y = 5;
         break;
+      case TILE_TYPE_COIN:
+        texture_idx_x = 8;
+        texture_idx_y = 5;
+        break;
       }
 
       Rectangle src =
@@ -78,6 +82,7 @@ void RenderMainGame(GameContext &ctx) {
     }
   }
 
+  // rendering player character
   float player_texture_idx = ctx.player.type == PLAYER_TYPE_MALE ? 4 : 8;
 
   Rectangle src = Rectangle{TILE_WIDTH * player_texture_idx, TILE_HEIGHT * 0,
@@ -89,6 +94,11 @@ void RenderMainGame(GameContext &ctx) {
                  0.0f, WHITE);
 
   EndMode2D();
+
+  // rendering the stats ui in top left corner
+  DrawRectangle(5, 5, 300, 100, SKYBLUE);
+  DrawText(TextFormat("Player Coins: %d", ctx.player.coins), 10, 10, 20,
+           YELLOW);
 }
 
 void GameRender(GameContext &ctx) {

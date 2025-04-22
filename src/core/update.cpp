@@ -78,11 +78,19 @@ void HandleMainGamePage(GameContext &ctx) {
 
   Tile next_block = ctx.world[next_block_x][next_block_y];
 
-  if ((next_block.type == TILE_TYPE_DIRT ||
-       next_block.type == TILE_TYPE_GRASS) &&
-      next_block_x >= 0 && next_block_y >= 0) {
-    ctx.player.position.x += pos_x_inc;
-    ctx.player.position.y += pos_y_inc;
+  if (next_block_x >= 0 && next_block_x < SCREEN_WIDTH && next_block_y >= 0 &&
+      next_block_y < SCREEN_HEIGHT) {
+    if (next_block.type == TILE_TYPE_COIN) {
+      ctx.player.coins++;
+      ctx.world[next_block_x][next_block_y].type = TILE_TYPE_DIRT;
+    }
+
+    if (next_block.type == TILE_TYPE_DIRT ||
+        next_block.type == TILE_TYPE_GRASS ||
+        next_block.type == TILE_TYPE_COIN) {
+      ctx.player.position.x += pos_x_inc;
+      ctx.player.position.y += pos_y_inc;
+    }
   }
 
   ctx.camera.target = ctx.player.position;
